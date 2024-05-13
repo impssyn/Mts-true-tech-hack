@@ -1,0 +1,25 @@
+@mixin box($width, $height: $width) 
+  width: $width
+  height: $height
+
+@mixin interactive 
+  cursor: pointer
+  transition: all 0.3s
+  user-select: none
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+  
+  @media (hover: hover) 
+    &:hover 
+      transform: scale(1.05)
+  
+  &:active
+    transform: scale(0.95)
+
+@mixin focus
+  position: relative
+  z-index: 2
+
+
+
+
+

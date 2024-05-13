@@ -1,0 +1,100 @@
+version: "3.9"
+
+services:
+  postgres:
+    container_name: db
+    image: postgres:16
+    env_file:
+      - packages/mts-server/.development.env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    volumes:
+      - db-dev-data:/var/lib/postgresql/data
+    networks:
+      - network
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5051:80"
+    volumes:
+      - pgadmin-dev-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - network
+  redis:
+    container_name: redis-client
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6380:6379'
+    command: /bin/sh -c "redis-server --save 20 1 --loglevel warning --requirepass $$REDIS_PASSWORD"
+    env_file:
+      - packages/mts-server/.development.env
+    volumes:
+      - redis-client-dev-data:/data
+    networks:
+      - network
+  api:
+    container_name: api
+    build:
+      context: ./packages/mts-server
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - ./packages/mts-server:/usr/src/app
+    env_file:
+      - ./packages/mts-server/.development.env
+    command: npm run start:dev
+    ports:
+      - "5001:3000"
+    depends_on:
+      - postgres
+      - pgadmin
+      - redis
+    networks:
+      - network
+  client:
+    container_name: client
+    build:
+      context: ./packages/mts-client
+      dockerfile: Dockerfile
+      target: development
+    restart: always
+    env_file: ./packages/mts-client/.env
+    ports:
+      - "3001:3000"
+    volumes:
+      - "./packages/mts-client/src:/usr/src/app/src"
+    command: npm run dev
+    networks:
+      - network
+  ai-stuff:
+    container_name: ai-stuff
+    build:
+      context: ./packages/ai-stuff
+      dockerfile: Dockerfile
+    command: fastapi dev main.py --host 0.0.0.0 --port 80
+    ports:
+      - "5002:80"
+    networks:
+      - network
+
+
+volumes:
+  db-dev-data:
+  pgadmin-dev-data:
+  redis-client-dev-data:
+    driver: local
+
+
+networks:
+  network:
+    driver: bridge

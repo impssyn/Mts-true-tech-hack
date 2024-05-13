@@ -1,0 +1,147 @@
+@import '../../shared/styles/_mixins'
+
+.wrapper
+    display: flex
+    flex-direction: column
+    align-items: center
+
+.actions
+    position: relative
+    z-index: 1
+
+    width: 100%
+
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 18px
+
+.action
+        @include interactive 
+        min-height: 178px
+        height: 178px
+        width: 100%
+        padding: 16px 20px
+
+        background: var(--background-primary)
+        color: var(--text-primary)
+        border-radius: 24px
+        box-shadow: 1px 3px 6px rgba(0,0,0,0.25)
+        
+        @media (hover: hover)
+            &:hover
+                box-shadow: 2px 6px 12px rgba(0, 0, 0, 0.25)
+        &:active
+            box-shadow: 1.5px 4.5px 9px rgba(0, 0, 0, 0.25)
+
+        display: flex
+        flex-grow: 1
+        flex-direction: column
+        gap: 8px
+
+        .icon
+            min-height: 36px
+            min-width: 36px
+            width: 36px
+            height: 36px
+
+        h2
+            font-weight: 500
+            font-size: 20px
+            line-height: 28px
+
+        span
+            margin: auto 0 0
+            font-weight: 400
+            font-size: 16px
+            line-height: 22px
+            white-space: nowrap
+
+.patterns
+    @include interactive
+    position: relative
+    z-index: 1
+
+    width: 100%
+    padding: 20px 24px
+
+    background: var(--accent-primary)
+    border-radius: 36px
+    box-shadow: 0 5px 6px rgba(0,0,0,0.25)
+    @media (hover: hover)
+        &:hover
+            box-shadow: 0 10px 12px rgba(0, 0, 0, 0.25)
+    &:active
+        box-shadow: 0 7.5px 9px rgba(0, 0, 0, 0.25)
+
+    .patternsTop
+        margin: 0 0 20px
+        display: flex
+        flex-direction: row
+        align-items: center
+        gap: 6px
+
+        h1
+            font-weight: 500
+            font-size: 22px
+            line-height: 31px
+            color: var(--text-contrast)
+
+        .actionIcon
+            fill: var(--text-contrast)
+
+    span.hint
+        font-weight: 400
+        font-size: 18px
+        line-height: 25px
+        color: var(--text-contrast-secondary)
+
+.history
+    @include interactive
+    width: 100%
+    padding: 6px 0 
+    background: var(--background-primary)
+    box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.25)
+    border-radius: 100px
+    color: var(--text-primary)
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 2px
+
+    flex-direction: row
+
+    font-size: 20px
+    line-height: 28px
+    font-weight: 500
+
+    .historyIcon
+        *
+            fill: var(--text-primary)
+
+
+.button
+    margin: auto 0 0
+
+@media screen and (max-height: 800px)
+    .wrapper
+        gap: 10px
+    .action
+        height: 144px
+    .patterns
+        padding: 10px 24px
+        .patternsTop
+            margin: 0 0 8px
+    .button
+        padding: 30px 0
+    
+@media screen and (max-width: 350px)
+    .actions
+        .action
+            height: 144px
+    .patterns
+        padding: 10px 24px
+        .patternsTop
+            margin: 0 0 8px
+    .button
+        padding: 30px 0
