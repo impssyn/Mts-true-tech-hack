@@ -62,7 +62,9 @@ export const SaveCommand = () => {
               color: "#fff",
               padding: "15px",
               borderRadius: "15px"
-            }}>Сохранить</button>
+            }}>
+            Сохранить
+          </button>
         </div>
       </form>
 

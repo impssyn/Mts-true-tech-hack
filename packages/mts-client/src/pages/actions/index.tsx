@@ -6,6 +6,7 @@ import Page from '@src/components/page'
 import { useState } from 'react'
 
 import styles from './styles.module.sass'
+import {toRublesStr} from "@src/app/services/account/helpers";
 
 const TEMP_DATA = {
 	recs: [
@@ -31,6 +32,7 @@ const Actions = () => {
 	const addCommand = () => {
 		//
 	}
+	console.log(cards)
 	return (
 		<Page>
 			<section className={styles.list}>
@@ -52,9 +54,9 @@ const Actions = () => {
 									className={styles.avatar}
 									style={{ background: '#FF0032' }}
 								/>
-								<h4 className={styles.name}>Анонимный аккаунт</h4>
+								<h4 className={styles.name}>{card.operation.details.recipient}</h4>
 								<div className={styles.description}>
-									<h6 className={styles.sum}> - 1000 ₽</h6>
+									<h6 className={styles.sum}> - {toRublesStr(card.operation.details.amount)}</h6>
 									<span className={styles.from}>карта</span>
 								</div>
 								{activeTab === 'Мои' ? (

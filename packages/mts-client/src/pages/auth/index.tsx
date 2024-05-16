@@ -10,6 +10,12 @@ import styles from './styles.module.sass'
 
 const authMethodSelectItems = [
 	{
+		value: 'username',
+		selectText: 'логин',
+		inputText: 'Введите логин',
+		inputType: 'text',
+	},
+	{
 		value: 'email',
 		selectText: 'e-mail',
 		inputText: 'Введите e-mail',
@@ -20,12 +26,6 @@ const authMethodSelectItems = [
 		selectText: 'телефон',
 		inputText: 'Введите телефон',
 		inputType: 'tel',
-	},
-	{
-		value: 'username',
-		selectText: 'логин',
-		inputText: 'Введите логин',
-		inputType: 'text',
 	},
 ]
 
@@ -59,12 +59,14 @@ const Auth = () => {
 		<Page>
 			<Logo />
 			<form className={styles.container} onSubmit={handleSubmit}>
-				<h2 aria-describedby="hint" className={styles.h2}>
-					Вход
-				</h2>
-				<p id="hint" className={styles.hint}>
-					Авторизуйтесь по логину, телефону или электронной почте
-				</p>
+				<div>
+					<h2 aria-describedby="hint" className={styles.h2}>
+						Вход
+					</h2>
+					<p id="hint" className={styles.hint}>
+						Авторизуйтесь по логину, телефону или электронной почте
+					</p>
+				</div>
 				<select
 					aria-describedby="login-hint"
 					className={styles.select}
@@ -84,7 +86,7 @@ const Auth = () => {
 					))}
 				</select>
 				<Input
-					aria-describedby="login-hint"
+					id="login-hint"
 					type={authMethodSelect.inputType}
 					placeholder={authMethodSelect.inputText}
 					value={lpe}
@@ -97,7 +99,7 @@ const Auth = () => {
 					aria-describedby="password-hint"
 					autoComplete="on"
 					type="password"
-					placeholder="Введите пароль..."
+					placeholder="Введите пароль"
 					value={pwd}
 					onChange={(e) => setPwd(e.target.value)}
 				></Input>

@@ -5,6 +5,7 @@ import Logo from '@src/components/logo'
 import Micro from '@src/components/micro'
 import Page from '@src/components/page'
 import cl from 'classnames'
+import {convert as convertNumberToWordsRu} from 'number-to-words-ru'
 
 import styles from './styles.module.sass'
 import cardSrc from '@assets/png/card.png'
@@ -43,7 +44,7 @@ const Balance = () => {
 					на всех счетах
 				</span>
 			</div>
-			<div aria-label={"Визуализатор баланса"} className={styles.progress}>
+			<div className={styles.progress}>
 				<div
 					className={styles.green}
 					style={{
@@ -58,7 +59,7 @@ const Balance = () => {
 				/>
 			</div>
 			<article aria-label={"Мои продукты"} className={styles.list}>
-				<section aria-describedby="header-1" className={styles.group}>
+				<div aria-describedby="header-1" className={styles.group}>
 					<h3
 						aria-describedby="header-1"
 						className={cl(styles.subheader, styles.green)}
@@ -70,18 +71,22 @@ const Balance = () => {
 						.map((card) => {
 							return (
 								<div key={card.id} className={styles.content}>
-									<img className={cl(styles.image)} src={cardSrc} />
-									<div className={styles.text}>
+									<img aria-hidden={true} className={cl(styles.image)} src={cardSrc} />
+									<a href='' aria-label={`Карта ${card.number}. Баланс ${convertNumberToWordsRu(card.balance / 100)}`} className={styles.text}>
 										<h4 className={styles.name}>{card.number}</h4>
 										<span className={styles.sum}>
 											{toRublesStr(card.balance)}
 										</span>
-									</div>
-									<Copy className={styles.icon} width={30} height={30} />
+									</a>
+									<button aria-label={"копировать номер карты"} style={{
+										background: "var(--background-secondary)"
+									}}>
+										<Copy className={styles.icon} width={30} height={30} />
+									</button>
 								</div>
 							)
 						})}
-				</section>
+				</div>
 				<section aria-describedby="header-2" className={styles.group}>
 					<h3 id="header-2" className={cl(styles.subheader, styles.yellow)}>
 						Кредитные карты
@@ -91,14 +96,18 @@ const Balance = () => {
 						.map((card) => {
 							return (
 								<div className={styles.content}>
-									<img className={cl(styles.image)} src={cardSrc} />
-									<div className={styles.text}>
+									<img aria-hidden={true} className={cl(styles.image)} src={cardSrc} />
+									<a href='' aria-label={`Карта ${card.number}. Баланс ${convertNumberToWordsRu(card.balance / 100)}`} className={styles.text}>
 										<h4 className={styles.name}>{card.number}</h4>
 										<span className={styles.sum}>
 											{toRublesStr(card.balance)}
 										</span>
-									</div>
-									<Copy className={styles.icon} width={30} height={30} />
+									</a>
+									<button aria-label={"копировать номер карты"} style={{
+										background: "var(--background-secondary)"
+									}}>
+										<Copy className={styles.icon} width={30} height={30} />
+									</button>
 								</div>
 							)
 						})}

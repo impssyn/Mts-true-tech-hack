@@ -21,20 +21,20 @@ const Transactions = () => {
 	return (
 		<Page className={styles.container}>
 			<nav className={styles.tabs}>
-				<div
+				<button
 					id="transfers"
 					className={tabClassname('transfers')}
 					onClick={() => handleTab('transfers')}
 				>
 					Переводы
-				</div>
-				<div
+				</button>
+				<button
 					id="payments"
 					className={tabClassname('payments')}
 					onClick={() => handleTab('payments')}
 				>
 					Платежи
-				</div>
+				</button>
 			</nav>
 			{activeTab === 'transfers' ? <Transfers /> : <Payments />}
 			<Micro />

@@ -31,6 +31,7 @@ const Micro = memo(({large = false, simple = false, onChangeText = undefined, ..
   const buttonRef = useRef<HTMLButtonElement>(null)
   const transcriptRef = useRef('')
   const recognizedRef = useRef(false)
+  const [isSpeaking, setIsSpeaking] = useState<boolean>(false)
 
   const {
     transcript,
@@ -68,17 +69,7 @@ const Micro = memo(({large = false, simple = false, onChangeText = undefined, ..
     setAudioURL(url)
   }
 
-  const handleStart = (e: MouseEvent<HTMLButtonElement>) => {
-    setAudioURL('')
-    // speechSynthesis.pause()
-    if (!browserSupportsSpeechRecognition) {
-      return toast.error("Browser doesn't support speech recognition.")
-    }
-    if (!isMicrophoneAvailable) {
-      return toast.error('Микрофон недоступен')
-    }
-    SpeechRecognition.startListening({language: 'ru'})
-
+  const ripple = (e: MouseEvent<HTMLButtonElement>) => {
     // ripples effect
     const overlay = document.createElement('span')
     overlay.classList.add(style.overlay)
@@ -90,7 +81,22 @@ const Micro = memo(({large = false, simple = false, onChangeText = undefined, ..
     setTimeout(() => overlay.remove(), 500)
   }
 
+  const handleStart = () => {
+    if (isSpeaking) return;
+    setIsSpeaking(true)
+    setAudioURL('')
+    // speechSynthesis.pause()
+    if (!browserSupportsSpeechRecognition) {
+      return toast.error("Browser doesn't support speech recognition.")
+    }
+    if (!isMicrophoneAvailable) {
+      return toast.error('Микрофон недоступен')
+    }
+    SpeechRecognition.startListening({language: 'ru'})
+  }
+
   const handleStop = () => {
+    setIsSpeaking(false)
     SpeechRecognition.stopListening()
     setTimeout(() => {
       if (!browserSupportsSpeechRecognition) return
@@ -104,8 +110,10 @@ const Micro = memo(({large = false, simple = false, onChangeText = undefined, ..
       }
       console.log('test')
       recognize({text: transcriptRef.current}).then(({data}) => {
+        console.log(data)
+        data.text && speak(data.text)
         if (data.commandType === CommandType.TRANSFER) {
-          navigate(`/transactions/?amount=${data.params.amount}&recipient=${data.params.recipient}&destAccountId=${data.params.destAccountId}&billingAccountId=${data.params.billingAccountId}`)
+          window.location.assign(`/transactions/?amount=${data.params.amount}&recipient=${data.params.recipient}&destAccountId=${data.params.destAccountId}&billingAccountId=${data.params.billingAccountId}`)
         }
         if (data.commandType === CommandType.PAYMENT) {
           console.log(
@@ -113,7 +121,12 @@ const Micro = memo(({large = false, simple = false, onChangeText = undefined, ..
             data.params
           )
         }
-        data.text && speak(data.text)
+        if (data.commandType === CommandType.BALANCE) {
+          console.log(data)
+          if (data.params.targetType === 'debit' || data.params.targetType === 'credit') {
+            navigate('/balance')
+          }
+        }
       })
     }, SOUND_STOP_DELAY)
   }
@@ -126,10 +139,14 @@ const Micro = memo(({large = false, simple = false, onChangeText = undefined, ..
     <>
       <button
         {...props}
+        type={"button"}
         ref={buttonRef}
         className={className}
-        onPointerDown={handleStart}
+        onPointerDown={(e) => handleStart() && ripple(e)}
         onPointerUp={handleStop}
+        onKeyDown={(e) => e.keyCode === 32 && handleStart()}
+        onKeyUp={(e) => e.keyCode === 32 && handleStop()}
+        // onKeyUp={() => console.log('test1')}
       >
         <Microphone width={56} height={56} className={style.microphone}/>
         {large && 'Зажмите и удерживайте'}

@@ -16,21 +16,19 @@ const Main = () => {
 	// loader
 	if (!data) return <></>
 	return (
-		<Page className={styles.wrapper}>
-			<div aria-label={"MTS Talk логотип"}>
-				<Logo />
-			</div>
-			<section aria-label={"Действия в приложении"} className={styles.actions}>
-				<nav aria-label={"Баланс на моих картах"} className={styles.action} onClick={() => navigate('/balance')}>
+		<Page className={styles.wrapper} aria-label={'главная страница'}>
+			<Logo />
+			<nav aria-label={"Действия в приложении"} className={styles.actions}>
+				<button aria-describedby="balance-hint" className={styles.action} onClick={() => navigate('/balance')}>
 					<Wallet width={36} height={36} className={styles.icon} />
 					<h2 aria-describedby="balance-hint">Баланс</h2>
 					<span id="balance-hint">
 						{toRublesStr(data.totalBalance)}
 						<br />в сумме
 					</span>
-				</nav>
-				<nav
-					aria-label={"Переводы и платежи"}
+				</button>
+				<button
+					aria-describedby="transfers-hint"
 					className={styles.action}
 					onClick={() => navigate('/transactions')}
 				>
@@ -41,9 +39,9 @@ const Main = () => {
 						<br />
 						за май
 					</span>
-				</nav>
-			</section>
-			<section aria-label={"Быстрые действия"} className={styles.patterns} onClick={() => navigate('/actions')}>
+				</button>
+			</nav>
+			<button aria-describedby="actions-hint" className={styles.patterns} onClick={() => navigate('/actions')}>
 				<div className={styles.patternsTop}>
 					<h1 aria-describedby="actions-hint">Быстрое действие</h1>
 					<Action className={styles.actionIcon} />
@@ -51,11 +49,14 @@ const Main = () => {
 				<span id="actions-hint" className={styles.hint}>
 					Совершайте повторные операции проще!
 				</span>
-			</section>
-			<section aria-label={"История транзакций"} className={styles.history} onClick={() => navigate('/history')}>
-				История <HistoryIcon className={styles.historyIcon} />
-			</section>
-			<Micro aria-label={"Микрофон голосового помощника"} large className={styles.button} />
+			</button>
+			<button aria-describedby="history-hint" className={styles.history} onClick={() => navigate('/history')}>
+				<span id="history-hint">
+					История
+				</span>
+				<HistoryIcon className={styles.historyIcon} />
+			</button>
+			<Micro aria-label={"Микрофон"} large className={styles.button} />
 		</Page>
 	)
 }

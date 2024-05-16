@@ -165,6 +165,7 @@ export class CommandService {
           }
 
           return {
+            commandType: command.type,
             error: false,
             text: `Баланс вашей карты составляет ${convertNumberToWordsRu((foundCards[0].account.balance / 100).toString())}`,
             params: {
@@ -186,6 +187,7 @@ export class CommandService {
           }
 
           return {
+            commandType: command.type,
             error: false,
             text: `Баланс вашей дебетовой карты составляет ${convertNumberToWordsRu(card.account.balance / 100).toString()}`,
             params: {
@@ -207,6 +209,7 @@ export class CommandService {
           }
 
           return {
+            commandType: command.type,
             error: false,
             text: `Баланс вашей кредитной карты составляет ${convertNumberToWordsRu(card.account.balance / 100).toString()}`,
             params: {

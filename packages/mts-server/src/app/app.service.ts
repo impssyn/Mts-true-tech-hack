@@ -40,10 +40,12 @@ export class AppService implements OnModuleInit {
       expirationMonth: "09",
       expirationYear: "2025",
       cardType: CardType.DEBIT,
-      balance: 2500000,
+      balance: 1000000,
       number: "5689123456431234",
       cv: "212"
     })
+
+    
 
     await this.productService.createCard({
       userId: user1.id,
